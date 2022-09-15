@@ -1,0 +1,12 @@
+FROM gcc:latest
+
+# Basic packages
+RUN apt-get -y -o Acquire::ForceIPv4=true update
+RUN apt-get install -y make scons g++
+RUN apt-get install -y wget unzip vim
+RUN apt-get install -y binutils elfutils patchelf
+
+# Set working directory
+RUN mkdir -p /usr/src/myapp
+WORKDIR /usr/src/myapp
+
