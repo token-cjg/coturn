@@ -32,8 +32,8 @@ RUN apt-get -y install libpq-dev libmariadb-dev libtirpc-dev libnsl-dev libevent
 COPY bin /usr/coturn/bin
 COPY build /usr/coturn/build
 
-WORKDIR /usr/coturn
+RUN mkdir /run/turnserver
 
-CMD ./bin/turnserver --daemon -c /etc/turnserver.conf --pidfile /run/turnserver/turnserver.pid
+CMD ./usr/coturn/bin/turnserver -c /etc/turnserver.conf --pidfile /run/turnserver/turnserver.pid
 EXPOSE 3478
 EXPOSE 5349
