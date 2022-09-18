@@ -31,6 +31,18 @@ RUN apt-get -y install libpq-dev libmariadb-dev libtirpc-dev libnsl-dev libevent
 
 COPY bin /usr/coturn/bin
 COPY build /usr/coturn/build
+COPY examples/etc/turnserver.conf /etc/turnserver.conf
+
+# Replace #lt-cred-mech with lt-cred-mech
+RUN sed -i 's/#lt-cred-mech/lt-cred-mech/g' /etc/turnserver.conf
+
+# Insert user=guest:somepassword into /etc/turnserver.conf
+RUN sed -i 's/#user=user1:password1/user=guest:somepassword/g' /etc/turnserver.conf
+
+# Listen on ip 0.0.0.0
+RUN echo "listening-ip=0.0.0.0" >> /etc/turnserver.conf
+RUN echo "log-file=/var/log/turnserver.log" >> /etc/turnserver.conf
+RUN echo "fingerprint" >> /etc/turnserver.conf
 
 RUN mkdir /run/turnserver
 
