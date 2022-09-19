@@ -5,6 +5,20 @@ RUN apt-get -y -o Acquire::ForceIPv4=true update
 RUN apt-get install -y make scons g++
 RUN apt-get install -y wget unzip vim
 RUN apt-get install -y binutils elfutils patchelf
+RUN apt-get install build-essential checkinstall zlib1g-dev wget -y
+RUN apt-get install -y libssl-dev
+
+# Get openssl
+RUN wget https://www.openssl.org/source/openssl-1.1.1c.tar.gz
+RUN tar -xvf openssl-1.1.1c.tar.gz
+RUN cd openssl-1.1.1c && ./config --prefix=/usr/local/ssl --openssldir=/usr/local/ssl shared zlib && make && make install
+RUN touch /etc/ld.so.conf.d/openssl-1.1.1c.conf
+RUN echo "/usr/local/ssl/lib" >> /etc/ld.so.conf.d/openssl-1.1.1c.conf
+RUN ldconfig -v
+
+# Add openssl to path variable in /etc/environment
+RUN echo "PATH=$PATH:/usr/local/ssl/bin" >> /etc/environment
+RUN . /etc/environment
 
 # Set working directory
 RUN mkdir -p /usr/src/myapp
