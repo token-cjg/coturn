@@ -300,6 +300,7 @@ typedef struct _turn_params_ {
 ////////////// MISC PARAMS ////////////////
 
   vint stun_only;
+  vint turn_only;
   vint no_stun;
   vint secure_stun;
   int server_relay;

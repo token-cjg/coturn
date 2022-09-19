@@ -184,6 +184,7 @@ struct toggleable_command {
 struct toggleable_command tcmds[] = {
 				{"stale-nonce",&turn_params.stale_nonce},
 				{"stun-only",&turn_params.stun_only},
+				{"turn-only",&turn_params.turn_only},
 				{"no-stun",&turn_params.no_stun},
 				{"secure-stun",&turn_params.secure_stun},
 				{"no-udp-relay",&turn_params.no_udp_relay},
