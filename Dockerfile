@@ -44,6 +44,9 @@ RUN echo "listening-ip=0.0.0.0" >> /etc/turnserver.conf
 RUN echo "log-file=/var/log/turnserver.log" >> /etc/turnserver.conf
 RUN echo "fingerprint" >> /etc/turnserver.conf
 
+# turn_only mode. This prevents requests with scheme stun or stuns from being processed by the relay server.
+RUN echo "turn-only" >> /etc/turnserver.conf
+
 RUN mkdir /run/turnserver
 
 CMD ./usr/coturn/bin/turnserver -c /etc/turnserver.conf --pidfile /run/turnserver/turnserver.pid
