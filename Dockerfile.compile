@@ -16,7 +16,10 @@ RUN touch /etc/ld.so.conf.d/openssl-1.1.1c.conf
 RUN echo "/usr/local/ssl/lib" >> /etc/ld.so.conf.d/openssl-1.1.1c.conf
 RUN ldconfig -v
 
+# Install libcrypto
 RUN apt-get install -y libcrypto++-dev libcrypto++-doc libcrypto++-utils
+# Install systemd
+RUN apt-get -y install libsystemd-dev
 
 # Add openssl to path variable in /etc/environment
 RUN echo "PATH=$PATH:/usr/local/ssl/bin" >> /etc/environment

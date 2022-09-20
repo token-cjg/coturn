@@ -2059,6 +2059,7 @@ static void write_pc_page(ioa_socket_handle s)
 				https_print_flag(sb,turn_params.turn_daemon,"daemon process",0);
 				https_print_flag(sb,turn_params.stale_nonce,"stale-nonce","stale-nonce");
 				https_print_flag(sb,turn_params.stun_only,"stun-only","stun-only");
+				https_print_flag(sb,turn_params.turn_only,"turn-only","turn-only");
 				https_print_flag(sb,turn_params.no_stun,"no-stun","no-stun");
 				https_print_flag(sb,turn_params.secure_stun,"secure-stun","secure-stun");
 				https_print_flag(sb,turn_params.do_not_use_config_file,"do-not-use-config-file",0);

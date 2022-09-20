@@ -28,7 +28,7 @@
  * SUCH DAMAGE.
  */
 
-#include "mainrelay.h"
+#include "../apps/relay/mainrelay.h"
 
 #include "ns_turn_utils.h"
 #include "ns_turn_ioalib.h"
