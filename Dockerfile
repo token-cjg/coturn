@@ -21,17 +21,15 @@ RUN apt-get -y -o Acquire::ForceIPv4=true update && apt-get install -y gcc-4.9 &
 RUN apt-get dist-upgrade -y
 RUN apt-get -y install libpq-dev libmariadb-dev libtirpc-dev libnsl-dev libevent-dev
 
-# Install libnsl
-# RUN apt-get -y install libtool autoconf gettext unzip wget gcc g++ cmake make -y
-# RUN mkdir -p /opt && cd /opt && \
-# wget https://github.com/thkukuk/libnsl/archive/v2.0.0.zip && \
-# unzip v2.0.0.zip && rm v2.0.0.zip && \
-# cd /opt/libnsl-2.0.0 &&  \
-# ./autogen.sh && ./configure && cmake && make install
+# Install sqlite
+RUN apt-get -y install sqlite3 libsqlite3-dev
 
+# Copy relevant files
 COPY bin /usr/coturn/bin
 COPY build /usr/coturn/build
 COPY examples/etc/turnserver.conf /etc/turnserver.conf
+COPY examples/coturn /etc/default/coturn
+COPY examples/etc/coturn.service /etc/systemd/system/coturn.service
 
 # Replace #lt-cred-mech with lt-cred-mech
 RUN sed -i 's/#lt-cred-mech/lt-cred-mech/g' /etc/turnserver.conf
@@ -39,15 +37,30 @@ RUN sed -i 's/#lt-cred-mech/lt-cred-mech/g' /etc/turnserver.conf
 # Insert user=guest:somepassword into /etc/turnserver.conf
 RUN sed -i 's/#user=user1:password1/user=guest:somepassword/g' /etc/turnserver.conf
 
+RUN useradd -m turnserver
+
 # Listen on ip 0.0.0.0
 RUN echo "listening-ip=0.0.0.0" >> /etc/turnserver.conf
 RUN echo "log-file=/var/log/turnserver.log" >> /etc/turnserver.conf
 RUN echo "fingerprint" >> /etc/turnserver.conf
+RUN echo "proc-user=turnserver" >> /etc/turnserver.conf
+RUN echo "proc-group=turnserver" >> /etc/turnserver.conf
+RUN echo "server-name=localhost" >> /etc/turnserver.conf
+RUN echo "realm=localhost" >> /etc/turnserver.conf
+
 
 # turn_only mode. This prevents requests with scheme stun or stuns from being processed by the relay server.
 RUN echo "turn-only" >> /etc/turnserver.conf
 
 RUN mkdir /run/turnserver
+
+RUN mkdir -p /usr/local/var/db
+
+RUN ./usr/coturn/bin/turnadmin -a -u guest -r localhost -p somepassword
+
+# Allow turnserver user to write to /var/log
+RUN chown -R turnserver /var/log
+RUN chown -R turnserver /usr/local/var/db
 
 CMD ./usr/coturn/bin/turnserver -c /etc/turnserver.conf --pidfile /run/turnserver/turnserver.pid
 EXPOSE 3478

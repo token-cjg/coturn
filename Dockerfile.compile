@@ -16,6 +16,8 @@ RUN touch /etc/ld.so.conf.d/openssl-1.1.1c.conf
 RUN echo "/usr/local/ssl/lib" >> /etc/ld.so.conf.d/openssl-1.1.1c.conf
 RUN ldconfig -v
 
+RUN apt-get install -y libcrypto++-dev libcrypto++-doc libcrypto++-utils
+
 # Add openssl to path variable in /etc/environment
 RUN echo "PATH=$PATH:/usr/local/ssl/bin" >> /etc/environment
 RUN . /etc/environment
@@ -23,4 +25,6 @@ RUN . /etc/environment
 # Set working directory
 RUN mkdir -p /usr/src/myapp
 WORKDIR /usr/src/myapp
+
+#CMD sleep infinity
 
