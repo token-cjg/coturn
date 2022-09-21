@@ -859,7 +859,6 @@ enum EXTRA_OPTS {
 	LOG_BINDING_OPT,
 	NO_RFC5780,
 	NO_STUN_BACKWARD_COMPATIBILITY_OPT,
-	TURN_ONLY_OPT,
 	RESPONSE_ORIGIN_ONLY_WITH_RFC5780_OPT,
 	VERSION_OPT
 };
@@ -948,7 +947,7 @@ static const struct myoption long_options[] = {
 				{ "channel-lifetime", optional_argument, NULL, CHANNEL_LIFETIME_OPT },
 				{ "permission-lifetime", optional_argument, NULL, PERMISSION_LIFETIME_OPT },
 				{ "stun-only", optional_argument, NULL, 'S' },
-				{ "turn-only", optional_argument, NULL, TURN_ONLY_OPT },
+				{ "turn-only", optional_argument, NULL, 'T' },
 				{ "no-stun", optional_argument, NULL, NO_STUN_OPT },
 				{ "cert", required_argument, NULL, CERT_FILE_OPT },
 				{ "pkey", required_argument, NULL, PKEY_FILE_OPT },
@@ -1422,7 +1421,7 @@ static void set_option(int c, char *value)
 	case 'S':
 		turn_params.stun_only = get_bool_value(value);
 		break;
-	case TURN_ONLY_OPT:
+	case 'T':
 		turn_params.turn_only = get_bool_value(value);
 		break;
 	case NO_STUN_OPT:

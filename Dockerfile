@@ -62,6 +62,8 @@ RUN ./usr/coturn/bin/turnadmin -a -u guest -r localhost -p somepassword
 RUN chown -R turnserver /var/log
 RUN chown -R turnserver /usr/local/var/db
 
-CMD ./usr/coturn/bin/turnserver -c /etc/turnserver.conf --pidfile /run/turnserver/turnserver.pid
+CMD ./usr/coturn/bin/turnserver -c /etc/turnserver.conf -u turnserver --pidfile /run/turnserver/turnserver.pid
 EXPOSE 3478
 EXPOSE 5349
+# expose ports 49000 through 50000
+EXPOSE 49152-65535
