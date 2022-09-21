@@ -655,6 +655,7 @@ static void cli_print_configuration(struct cli_session* cs)
 		cli_print_flag(cs,turn_params.turn_daemon,"daemon process",0);
 		cli_print_flag(cs,turn_params.stale_nonce,"stale-nonce",1);
 		cli_print_flag(cs,turn_params.stun_only,"stun-only",1);
+		cli_print_flag(cs,turn_params.turn_only,"turn-only",1);
 		cli_print_flag(cs,turn_params.no_stun,"no-stun",1);
 		cli_print_flag(cs,turn_params.secure_stun,"secure-stun",1);
 		cli_print_flag(cs,turn_params.do_not_use_config_file,"do-not-use-config-file",0);
