@@ -4926,7 +4926,7 @@ void init_turn_server(turn_turnserver* server,
 		vintp channel_lifetime,
 		vintp permission_lifetime,
 		vintp stun_only,
-		vintp turn_only,
+		vintp use_turn_only,
 		vintp no_stun,
 		vintp no_software_attribute,
 		vintp web_admin_listen_on_workers,
@@ -4994,7 +4994,7 @@ void init_turn_server(turn_turnserver* server,
 	server->channel_lifetime = channel_lifetime;
 	server->permission_lifetime = permission_lifetime;
 	server->stun_only = stun_only;
-	server->turn_only = turn_only;
+	server->use_turn_only = use_turn_only;
 	server->no_stun = no_stun;
 	server->no_software_attribute = no_software_attribute;
 	server-> web_admin_listen_on_workers = web_admin_listen_on_workers;

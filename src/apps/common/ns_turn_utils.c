@@ -599,8 +599,8 @@ int get_default_protocol_port(const char* scheme, size_t slen)
 				return 5061;
 			if(!memcmp("turn",scheme,4))
 				return 3478;
-			//if(!memcmp("stun",scheme,4) && !turn_params.turn_only)
-			//	return 3478;
+			if(!memcmp("stun",scheme,4) && !turn_params.use_turn_only)
+				return 3478;
 			break;
 		case 5:
 			if(!memcmp("https",scheme,5))
@@ -609,8 +609,8 @@ int get_default_protocol_port(const char* scheme, size_t slen)
 				return 636;
 			if(!memcmp("turns",scheme,5))
 				return 5349;
-			//if(!memcmp("stuns",scheme,5) && !turn_params.turn_only)
-			//	return 5349;
+			if(!memcmp("stuns",scheme,5) && !turn_params.use_turn_only)
+				return 5349;
 			break;
 		case 6:
 			if(!memcmp("telnet",scheme,6))

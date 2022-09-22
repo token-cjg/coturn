@@ -47,10 +47,10 @@ RUN echo "proc-user=turnserver" >> /etc/turnserver.conf
 RUN echo "proc-group=turnserver" >> /etc/turnserver.conf
 RUN echo "server-name=localhost" >> /etc/turnserver.conf
 RUN echo "realm=localhost" >> /etc/turnserver.conf
-
+RUN echo "verbose" >> /etc/turnserver.conf
 
 # turn_only mode. This prevents requests with scheme stun or stuns from being processed by the relay server.
-RUN echo "turn-only" >> /etc/turnserver.conf
+RUN echo "use-turn-only" >> /etc/turnserver.conf
 
 RUN mkdir /run/turnserver
 
