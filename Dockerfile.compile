@@ -20,6 +20,8 @@ RUN ldconfig -v
 RUN apt-get install -y libcrypto++-dev libcrypto++-doc libcrypto++-utils
 # Install systemd
 RUN apt-get -y install libsystemd-dev
+# Install autoconf
+RUN apt-get install -y autoconf
 
 # Add openssl to path variable in /etc/environment
 RUN echo "PATH=$PATH:/usr/local/ssl/bin" >> /etc/environment
