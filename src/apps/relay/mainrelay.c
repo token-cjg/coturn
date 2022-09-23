@@ -1424,7 +1424,7 @@ static void set_option(int c, char *value)
 		turn_params.stun_only = get_bool_value(value);
 		break;
 	case TURN_ONLY_OPT:
-		turn_params.use_turn_only = get_bool_value(value);
+		turn_params.use_turn_only = 1;
 		break;
 	case NO_STUN_OPT:
 		turn_params.no_stun = get_bool_value(value);
@@ -1752,6 +1752,7 @@ static int parse_arg_string(char *sarg, int *c, char **value)
 	}
 
 	while(long_options[i].name) {
+		TURN_LOG_FUNC(TURN_LOG_LEVEL_WARNING, "Comparing %s with %s", sarg, long_options[i].name);
 		if(strcmp(long_options[i].name,name)) {
 			++i;
 			continue;
@@ -1759,6 +1760,8 @@ static int parse_arg_string(char *sarg, int *c, char **value)
 		*c=long_options[i].val;
 		return 0;
 	}
+
+
 
 	return -1;
 }

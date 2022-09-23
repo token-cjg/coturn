@@ -10,6 +10,7 @@
 # Build the compile image for compilation
 docker build -f Dockerfile.compile . -t gcc-build-coturn
 # Run the compile image in order to build the required headless binary
-docker run --rm -v "$PWD":/usr/coturn -w /usr/coturn gcc-build-coturn ./configure && make SHELL=/bin/bash CPPFLAGS="$CPPFLAGS -I/usr/local/ssl/include -I/usr/local/opt/openssl/include" LDFLAGS="$LDFLAGS -L/usr/local/ssl/lib -L/usr/local/opt/openssl/lib"  
+docker run --rm -v "$PWD":/usr/coturn -w /usr/coturn gcc-build-coturn ./configure
+docker run --rm -v "$PWD":/usr/coturn -w /usr/coturn gcc-build-coturn make SHELL=/bin/bash 
 # Build the coturn runtime image
 docker build . -t coturn

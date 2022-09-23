@@ -32,12 +32,15 @@ COPY examples/coturn /etc/default/coturn
 COPY examples/etc/coturn.service /etc/systemd/system/coturn.service
 
 # Replace #lt-cred-mech with lt-cred-mech
-RUN sed -i 's/#lt-cred-mech/lt-cred-mech/g' /etc/turnserver.conf
+#RUN sed -i 's/#lt-cred-mech/lt-cred-mech/g' /etc/turnserver.conf
 
 # Insert user=guest:somepassword into /etc/turnserver.conf
 RUN sed -i 's/#user=user1:password1/user=guest:somepassword/g' /etc/turnserver.conf
 
 RUN useradd -m turnserver
+
+RUN echo "lt-cred-mech" >> /etc/turnserver.conf
+#RUN echo "use-auth-secret" >> /etc/turnserver.conf
 
 # Listen on ip 0.0.0.0
 RUN echo "listening-ip=0.0.0.0" >> /etc/turnserver.conf
@@ -50,7 +53,7 @@ RUN echo "realm=localhost" >> /etc/turnserver.conf
 RUN echo "verbose" >> /etc/turnserver.conf
 
 # turn_only mode. This prevents requests with scheme stun or stuns from being processed by the relay server.
-RUN echo "use-turn-only" >> /etc/turnserver.conf
+#RUN echo "use-turn-only" >> /etc/turnserver.conf
 
 RUN mkdir /run/turnserver
 

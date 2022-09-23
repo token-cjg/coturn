@@ -29,5 +29,5 @@ RUN . /etc/environment
 RUN mkdir -p /usr/src/myapp
 WORKDIR /usr/src/myapp
 
-#CMD sleep infinity
+CMD sleep infinity
 
