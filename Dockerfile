@@ -31,18 +31,23 @@ COPY examples/etc/turnserver.conf /etc/turnserver.conf
 COPY examples/coturn /etc/default/coturn
 COPY examples/etc/coturn.service /etc/systemd/system/coturn.service
 
-# Replace #lt-cred-mech with lt-cred-mech
-#RUN sed -i 's/#lt-cred-mech/lt-cred-mech/g' /etc/turnserver.conf
+# Get openssl
+RUN apt-get -y install wget libcrypto++-dev libcrypto++-doc libcrypto++-utils
 
-# Insert user=guest:somepassword into /etc/turnserver.conf
-RUN sed -i 's/#user=user1:password1/user=guest:somepassword/g' /etc/turnserver.conf
+# Make keys
+RUN mkdir -p /etc/ssl/certs
+RUN mkdir -p /etc/ssl/private
+RUN openssl req -x509 -nodes -days 365 \
+    -subj  "/C=CA/ST=QC/O=Company Inc/CN=localhost" \
+     -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key \
+     -out /etc/ssl/certs/nginx-selfsigned.crt;
 
 RUN useradd -m turnserver
 
+# Setup turnserver.conf
 RUN echo "lt-cred-mech" >> /etc/turnserver.conf
 #RUN echo "use-auth-secret" >> /etc/turnserver.conf
-
-# Listen on ip 0.0.0.0
+RUN echo "user=guest:somepassword" >> /etc/turnserver.conf
 RUN echo "listening-ip=0.0.0.0" >> /etc/turnserver.conf
 RUN echo "log-file=/var/log/turnserver.log" >> /etc/turnserver.conf
 RUN echo "fingerprint" >> /etc/turnserver.conf
@@ -51,6 +56,12 @@ RUN echo "proc-group=turnserver" >> /etc/turnserver.conf
 RUN echo "server-name=localhost" >> /etc/turnserver.conf
 RUN echo "realm=localhost" >> /etc/turnserver.conf
 RUN echo "verbose" >> /etc/turnserver.conf
+RUN echo "cli-password=somepassword" >> /etc/turnserver.conf
+
+
+# Key + Crt
+RUN echo "cert=/etc/ssl/certs/nginx-selfsigned.crt" >> /etc/turnserver.conf
+RUN echo "pkey=/etc/ssl/private/nginx-selfsigned.key" >> /etc/turnserver.conf
 
 # turn_only mode. This prevents requests with scheme stun or stuns from being processed by the relay server.
 #RUN echo "use-turn-only" >> /etc/turnserver.conf
@@ -65,7 +76,7 @@ RUN ./usr/coturn/bin/turnadmin -a -u guest -r localhost -p somepassword
 RUN chown -R turnserver /var/log
 RUN chown -R turnserver /usr/local/var/db
 
-CMD ./usr/coturn/bin/turnserver -c /etc/turnserver.conf -u turnserver --pidfile /run/turnserver/turnserver.pid
+CMD ./usr/coturn/bin/turnserver -c /etc/turnserver.conf --pidfile /run/turnserver/turnserver.pid
 EXPOSE 3478
 EXPOSE 5349
 # expose ports 49000 through 50000
