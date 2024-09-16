@@ -184,6 +184,7 @@ struct toggleable_command {
 struct toggleable_command tcmds[] = {
 				{"stale-nonce",&turn_params.stale_nonce},
 				{"stun-only",&turn_params.stun_only},
+				{"use-turn-only",&turn_params.use_turn_only},
 				{"no-stun",&turn_params.no_stun},
 				{"secure-stun",&turn_params.secure_stun},
 				{"no-udp-relay",&turn_params.no_udp_relay},
@@ -654,6 +655,7 @@ static void cli_print_configuration(struct cli_session* cs)
 		cli_print_flag(cs,turn_params.turn_daemon,"daemon process",0);
 		cli_print_flag(cs,turn_params.stale_nonce,"stale-nonce",1);
 		cli_print_flag(cs,turn_params.stun_only,"stun-only",1);
+		cli_print_flag(cs,turn_params.use_turn_only,"use-turn-only",1);
 		cli_print_flag(cs,turn_params.no_stun,"no-stun",1);
 		cli_print_flag(cs,turn_params.secure_stun,"secure-stun",1);
 		cli_print_flag(cs,turn_params.do_not_use_config_file,"do-not-use-config-file",0);
@@ -2058,6 +2060,7 @@ static void write_pc_page(ioa_socket_handle s)
 				https_print_flag(sb,turn_params.turn_daemon,"daemon process",0);
 				https_print_flag(sb,turn_params.stale_nonce,"stale-nonce","stale-nonce");
 				https_print_flag(sb,turn_params.stun_only,"stun-only","stun-only");
+				https_print_flag(sb,turn_params.use_turn_only,"use-turn-only","use-turn-only");
 				https_print_flag(sb,turn_params.no_stun,"no-stun","no-stun");
 				https_print_flag(sb,turn_params.secure_stun,"secure-stun","secure-stun");
 				https_print_flag(sb,turn_params.do_not_use_config_file,"do-not-use-config-file",0);

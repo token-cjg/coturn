@@ -154,6 +154,7 @@ LOW_DEFAULT_PORTS_BOUNDARY,HIGH_DEFAULT_PORTS_BOUNDARY,0,0,0,"",
 0,
 /////////////// MISC PARAMS ////////////////
 0, /* stun_only */
+0, /* use_turn_only */
 0, /* no_stun */
 0, /* secure_stun */
 0, /* server_relay */
@@ -638,7 +639,8 @@ static char Usage[] = "Usage: turnserver [options]\n"
 " --permission-lifetime		<value>		Set the value for the lifetime of the permission. Default to 300 secs.\n"
 "						This MUST not be changed for production purposes.\n"
 " -S, --stun-only				Option to set standalone STUN operation only, all TURN requests will be ignored.\n"
-"     --no-stun					Option to suppress STUN functionality, only TURN requests will be processed.\n"
+" --use-turn-only				Option to set standalone TURN operation only, all STUN requests will be ignored.\n"
+" --no-stun					Option to suppress STUN functionality, only TURN requests will be processed.\n"
 " --alternate-server		<ip:port>	Set the TURN server to redirect the allocate requests (UDP and TCP services).\n"
 "						Multiple alternate-server options can be set for load balancing purposes.\n"
 "						See the docs for more information.\n"
@@ -822,6 +824,7 @@ enum EXTRA_OPTS {
 	SECURE_STUN_OPT,
 	CA_FILE_OPT,
 	DH_FILE_OPT,
+	TURN_ONLY_OPT,
 	NO_STUN_OPT,
 	PROC_USER_OPT,
 	PROC_GROUP_OPT,
@@ -946,6 +949,7 @@ static const struct myoption long_options[] = {
 				{ "channel-lifetime", optional_argument, NULL, CHANNEL_LIFETIME_OPT },
 				{ "permission-lifetime", optional_argument, NULL, PERMISSION_LIFETIME_OPT },
 				{ "stun-only", optional_argument, NULL, 'S' },
+				{ "use-turn-only", optional_argument, NULL, TURN_ONLY_OPT },
 				{ "no-stun", optional_argument, NULL, NO_STUN_OPT },
 				{ "cert", required_argument, NULL, CERT_FILE_OPT },
 				{ "pkey", required_argument, NULL, PKEY_FILE_OPT },
@@ -1419,6 +1423,9 @@ static void set_option(int c, char *value)
 	case 'S':
 		turn_params.stun_only = get_bool_value(value);
 		break;
+	case TURN_ONLY_OPT:
+		turn_params.use_turn_only = 1;
+		break;
 	case NO_STUN_OPT:
 		turn_params.no_stun = get_bool_value(value);
 		break;
@@ -1745,6 +1752,7 @@ static int parse_arg_string(char *sarg, int *c, char **value)
 	}
 
 	while(long_options[i].name) {
+		TURN_LOG_FUNC(TURN_LOG_LEVEL_WARNING, "Comparing %s with %s", sarg, long_options[i].name);
 		if(strcmp(long_options[i].name,name)) {
 			++i;
 			continue;
@@ -1752,6 +1760,8 @@ static int parse_arg_string(char *sarg, int *c, char **value)
 		*c=long_options[i].val;
 		return 0;
 	}
+
+
 
 	return -1;
 }

@@ -127,6 +127,7 @@ struct _turn_turnserver {
         vintp channel_lifetime;
         vintp permission_lifetime;
 	vintp stun_only;
+	vintp use_turn_only;
 	vintp no_stun;
 	vintp no_software_attribute;
 	vintp web_admin_listen_on_workers;
@@ -218,6 +219,7 @@ void init_turn_server(turn_turnserver* server,
                                     vintp channel_lifetime,
                                     vintp permission_lifetime,
 				    vintp stun_only,
+					vintp use_turn_only,
 				    vintp no_stun,
 				    vintp no_software_attribute,
 				    vintp web_admin_listen_on_workers,
